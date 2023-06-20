@@ -57,7 +57,7 @@ CFRunLoopSourceRef currentRunLoopSource;
 #pragma mark Implementation
 
 @implementation Controller {
-  NSTimer* _restartTimer __weak; // Using `weak` so that the pointer is automatically set to `nil` when the referenced object is released ( https://en.wikipedia.org/wiki/Automatic_Reference_Counting#Zeroing_Weak_References ). This helps preventing fatal EXC_BAD_ACCESS.
+  NSTimer* _restartTimer;
 }
 
 - (void)start
@@ -209,6 +209,7 @@ static void unregisterMouseCallback(void)
   _restartTimer = [NSTimer scheduledTimerWithTimeInterval:delay
                                                   repeats:NO
                                                     block:^(NSTimer* timer) {
+                                                      _restartTimer = nil;
                                                       [self restartListeners];
                                                     }];
 }
